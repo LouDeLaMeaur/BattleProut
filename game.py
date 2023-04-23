@@ -42,6 +42,7 @@ class Game:
     
     def on_loop(self):
         self.world.player.curs_pos = pygame.mouse.get_pos()
+        self.world.player.find_vision()
 
     def on_render(self):
         self.screen.fill('black')
