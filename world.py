@@ -17,7 +17,6 @@ class World:
 class Player:
     def __init__(self):
         self.pos = [500, 300]
-        self.rect = pygame.Rect(self.pos, (20, 20))
         self.color = 'red'
         self.curs_pos = pygame.mouse.get_pos()
         self.vision = None
@@ -29,11 +28,11 @@ class Player:
         self._draw_prout_pos(screen)
     
     def _draw_character(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
-        pygame.draw.circle(screen, "blue", (self.pos[0]+10, self.pos[1]+10), 100, width=1)
+        pygame.draw.circle(screen, self.color, self.pos, 10)
+        pygame.draw.circle(screen, "blue",self.pos , 100, width=1)
 
     def _draw_vision(self, screen):
-        pygame.draw.line(screen, 'gray', (self.pos[0]+10, self.pos[1]+10), (self.vision))
+        pygame.draw.line(screen, 'gray', self.pos, (self.vision))
 
     def _draw_prout_pos(self, screen):
         pygame.draw.circle(screen, "white", self.prout_pos, 2)
@@ -41,12 +40,10 @@ class Player:
     def move(self, delta: Tuple):
         self.pos[0] += delta[0]
         self.pos[1] += delta[1]
-        self.rect = self.rect.move(delta[0], delta[1])
-        print(self.rect)
 
     def find_vision(self):
-        oppose = self.pos[1]+10 - self.curs_pos[1]
-        adja = self.pos[0]+10 - self.curs_pos[0]
+        oppose = self.pos[1] - self.curs_pos[1]
+        adja = self.pos[0] - self.curs_pos[0]
         try:
             alpha = math.atan(oppose / adja)
         except ZeroDivisionError:
@@ -57,8 +54,8 @@ class Player:
         if adja > 0:
             dx *= -1
             dy *= -1
-        self.vision = (self.pos[0]+10+dx, self.pos[1]+10+dy) 
-        self.prout_pos = (self.pos[0]+10-dx, self.pos[1]+10-dy)
+        self.vision = (self.pos[0]+dx, self.pos[1]+dy) 
+        self.prout_pos = (self.pos[0]-dx, self.pos[1]-dy)
 
     def prout(self):
         self.color = 'brown'
