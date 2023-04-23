@@ -3,16 +3,18 @@ from typing import Tuple
 import numpy as np
 from configparser import ConfigParser
 import math
+from prout import Prout
 
 class World:
     def __init__(self):
         self.level = Level()
         self.player = Player()
-        # self.effects = Effects()
+        self.effects = Effects()
 
     def draw(self, screen):
         self.level.draw(screen)
         self.player.draw(screen)
+        self.effects.draw(screen)
 
 class Player:
     def __init__(self):
@@ -57,8 +59,8 @@ class Player:
         self.vision = (self.pos[0]+dx, self.pos[1]+dy) 
         self.prout_pos = (self.pos[0]-dx, self.pos[1]-dy)
 
-    def prout(self):
-        self.color = 'brown'
+    def prout(self, effet):
+        effet.prouts.append(Prout(self.prout_pos[0], self.prout_pos[1]))
 
 class Level:
     def __init__(self):
@@ -103,3 +105,11 @@ class Level:
                     rect_int = pygame.Rect((block_index*40+5, row_index*40+5), (30, 30))
                     pygame.draw.rect(screen, 'blue', rect_ext)
                     pygame.draw.rect(screen, 'black', rect_int)
+
+class Effects:
+    def __init__(self):
+        self.prouts = []
+
+    def draw(self, screen):
+        for prout in self.prouts:
+            prout.draw(screen)

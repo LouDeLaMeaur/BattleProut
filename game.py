@@ -50,7 +50,7 @@ class Game:
             if not self.world.level.is_wall(math.floor((self.world.player.pos[0]+10)/40), math.floor((self.world.player.pos[1])/40)):
                 self.world.player.move((10, 0))
         if keys[pygame.K_SPACE]:
-            self.world.player.prout()
+            self.world.player.prout(self.world.effects)
 
     
     def on_loop(self):
