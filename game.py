@@ -1,6 +1,8 @@
 import pygame
 from world import World
 from config import *
+import math
+# from tcpclient import TCPClient
 
 class Game:
     def __init__(self):
@@ -8,6 +10,7 @@ class Game:
         self.screen = pygame.display.set_mode(WINDOW_SIZE)
         self.clock = pygame.time.Clock()
         self.world = World()
+        # self.client = TCPClient()
 
     def setup(self):
         pygame.init()
@@ -22,16 +25,23 @@ class Game:
         # Key pressed Event
         keys = pygame.key.get_pressed()
         if keys[pygame.K_z]:
-            self.world.player.move((0, -10))
+            if not self.world.level.is_wall(math.floor(self.world.player.pos[0]/40), math.floor((self.world.player.pos[1]-10)/40)):
+                self.world.player.move((0, -10))
         if keys[pygame.K_q]:
-            self.world.player.move((-10, 0))
+            if not self.world.level.is_wall(math.floor((self.world.player.pos[0]-10)/40), math.floor((self.world.player.pos[1])/40)):
+                self.world.player.move((-10, 0))
         if keys[pygame.K_s]:
-            self.world.player.move((0, 10))
+            if not self.world.level.is_wall(math.floor((self.world.player.pos[0])/40), math.floor((self.world.player.pos[1]+20)/40)):
+                self.world.player.move((0, 10))
         if keys[pygame.K_d]:
-            self.world.player.move((10, 0))
+            if not self.world.level.is_wall(math.floor((self.world.player.pos[0]+20)/40), math.floor((self.world.player.pos[1])/40)):
+                self.world.player.move((10, 0))
+        if keys[pygame.K_SPACE]:
+            self.world.player.prout()
+
     
     def on_loop(self):
-        pass
+        self.world.player.curs_pos = pygame.mouse.get_pos()
 
     def on_render(self):
         self.screen.fill('black')

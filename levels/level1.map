@@ -1,0 +1,25 @@
+[level]
+tileset = .
+level_map = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    X............................X
+    X...................XXXX.....X
+    X......................X.....X
+    X......................X.....X
+    X......................X.....X
+    X......................X.....X
+    X............................X
+    X..XXXXXX....................X
+    X..XXXXXX....................X
+    X............................X
+    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+test_quoi = bon bah voila
+    j'ai tout dis menfin bref
+   
+[X]
+name = wall
+wall = true
+block = true
+
+[.]
+name = floor
