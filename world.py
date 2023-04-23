@@ -18,7 +18,7 @@ class Player:
     def __init__(self):
         self.pos = [500, 300]
         self.color = 'red'
-        self.curs_pos = pygame.mouse.get_pos()
+        self.curs_pos = ()
         self.vision = None
         self.prout_pos = None
         

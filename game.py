@@ -1,20 +1,33 @@
 import pygame
 from world import World
-from config import *
 import math
+from configparser import ConfigParser
 # from tcpclient import TCPClient
 
 class Game:
     def __init__(self):
         self.running = False
-        self.screen = pygame.display.set_mode(WINDOW_SIZE)
-        self.clock = pygame.time.Clock()
+        self.parser = None
+        self.screen = None
+        self.clock = None
         self.world = World()
         # self.client = TCPClient()
 
     def setup(self):
         pygame.init()
+        self._setup_config()
+        self._setup_screen()
+        self.clock = pygame.time.Clock()
         self.running = True
+
+    def _setup_config(self):
+        self.parser = ConfigParser()
+        self.parser.read("options")
+
+    def _setup_screen(self):
+        window_width = int(self.parser.get('screen', 'window_width'))
+        window_height = int(self.parser.get('screen', 'window_height'))
+        self.screen = pygame.display.set_mode((window_width, window_height))
 
     def on_envent(self):
         # Quit event
@@ -48,7 +61,8 @@ class Game:
         self.screen.fill('black')
         self.world.draw(self.screen)
         pygame.display.flip()
-        self.clock.tick(FPS)  # limits FPS to 60
+        fps = int(self.parser.get('screen', 'FPS'))
+        self.clock.tick(fps)  # limits FPS to 60
 
     def mainLoop(self):
         self.setup()
