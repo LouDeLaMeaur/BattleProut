@@ -51,6 +51,8 @@ class Game:
                 self.world.player.move((10, 0))
         if keys[pygame.K_SPACE]:
             self.world.player.prout(self.world.effects)
+        if keys[pygame.K_x]:
+            self.world.effects.prouts = []
 
     
     def on_loop(self):
