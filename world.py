@@ -112,4 +112,4 @@ class Effects:
 
     def draw(self, screen):
         for prout in self.prouts:
-            prout.draw(screen)
+            prout.draw(screen, self.prouts)
