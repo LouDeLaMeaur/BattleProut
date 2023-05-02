@@ -11,6 +11,7 @@ class Game:
         self.screen = None
         self.clock = None
         self.world = World()
+        self.fps = None
         # self.client = TCPClient()
 
     def setup(self):
@@ -28,6 +29,7 @@ class Game:
         window_width = int(self.parser.get('screen', 'window_width'))
         window_height = int(self.parser.get('screen', 'window_height'))
         self.screen = pygame.display.set_mode((window_width, window_height))
+        self.fps = int(self.parser.get('screen', 'FPS'))
         pygame.display.set_caption(self.parser.get('screen', 'window_title'))
 
     def on_envent(self):
@@ -38,22 +40,7 @@ class Game:
         
         # Key pressed Event
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_z]:
-            if not self.world.level.is_wall(math.floor(self.world.player.pos[0]/40), math.floor((self.world.player.pos[1]-20)/40)):
-                self.world.player.move((0, -10))
-        if keys[pygame.K_q]:
-            if not self.world.level.is_wall(math.floor((self.world.player.pos[0]-20)/40), math.floor((self.world.player.pos[1])/40)):
-                self.world.player.move((-10, 0))
-        if keys[pygame.K_s]:
-            if not self.world.level.is_wall(math.floor((self.world.player.pos[0])/40), math.floor((self.world.player.pos[1]+10)/40)):
-                self.world.player.move((0, 10))
-        if keys[pygame.K_d]:
-            if not self.world.level.is_wall(math.floor((self.world.player.pos[0]+10)/40), math.floor((self.world.player.pos[1])/40)):
-                self.world.player.move((10, 0))
-        if keys[pygame.K_SPACE]:
-            self.world.player.prout(self.world.effects)
-        if keys[pygame.K_x]:
-            self.world.effects.prouts = []
+        self.world.player.refresh(keys)
 
     
     def on_loop(self):
@@ -64,8 +51,7 @@ class Game:
         self.screen.fill('black')
         self.world.draw(self.screen)
         pygame.display.flip()
-        fps = int(self.parser.get('screen', 'FPS'))
-        self.clock.tick(fps)  # limits FPS to 60
+        self.clock.tick(self.fps)  # limits FPS to 60
 
     def mainLoop(self):
         self.setup()

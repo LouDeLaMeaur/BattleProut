@@ -8,7 +8,7 @@ from prout import Prout
 class World:
     def __init__(self):
         self.level = Level()
-        self.player = Player()
+        self.player = Player(self)
         self.effects = Effects()
 
     def draw(self, screen):
@@ -17,8 +17,10 @@ class World:
         self.effects.draw(screen)
 
 class Player:
-    def __init__(self):
+    def __init__(self, world):
+        self.world = world
         self.pos = [500, 300]
+        self.vitesse = 5
         self.color = 'red'
         self.curs_pos = ()
         self.vision = None
@@ -38,6 +40,31 @@ class Player:
 
     def _draw_prout_pos(self, screen):
         pygame.draw.circle(screen, "white", self.prout_pos, 2)
+
+    def refresh(self, keys): 
+        # get key events and decide if players doing something or not
+        self.refresh_position(keys)
+        self.refresh_action(keys)
+
+    def refresh_position(self, keys):
+        if keys[pygame.K_z]:
+            if not self.world.level.is_wall(math.floor(self.pos[0]/40), math.floor((self.pos[1]-20)/40)):
+                self.move((0, -self.vitesse))
+        if keys[pygame.K_q]:
+            if not self.world.level.is_wall(math.floor((self.pos[0]-20)/40), math.floor((self.pos[1])/40)):
+                self.move((-self.vitesse, 0))
+        if keys[pygame.K_s]:
+            if not self.world.level.is_wall(math.floor((self.pos[0])/40), math.floor((self.pos[1]+10)/40)):
+                self.move((0, self.vitesse))
+        if keys[pygame.K_d]:
+            if not self.world.level.is_wall(math.floor((self.pos[0]+10)/40), math.floor((self.pos[1])/40)):
+                self.move((self.vitesse, 0))
+
+    def refresh_action(self, keys):
+        if keys[pygame.K_SPACE]:
+            self.world.player.prout(self.world.effects)
+        if keys[pygame.K_x]:
+            self.world.effects.remove_all_prouts()
 
     def move(self, delta: Tuple):
         self.pos[0] += delta[0]
@@ -113,3 +140,6 @@ class Effects:
     def draw(self, screen):
         for prout in self.prouts:
             prout.draw(screen, self.prouts)
+
+    def remove_all_prouts(self):
+        self.prouts = []
