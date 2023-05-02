@@ -1,7 +1,9 @@
 [screen]
 window_width = 1280
 window_height = 720
+window_title = BattleProut v0.0
 FPS = 60
+
 
 [server]
 ip = 127.0.0.1

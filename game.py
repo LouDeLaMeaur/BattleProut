@@ -28,6 +28,7 @@ class Game:
         window_width = int(self.parser.get('screen', 'window_width'))
         window_height = int(self.parser.get('screen', 'window_height'))
         self.screen = pygame.display.set_mode((window_width, window_height))
+        pygame.display.set_caption(self.parser.get('screen', 'window_title'))
 
     def on_envent(self):
         # Quit event
